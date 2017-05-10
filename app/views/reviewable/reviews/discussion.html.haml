@@ -1,0 +1,55 @@
+- page_title           "#{@merge_request.title} (#{@merge_request.to_reference})", "Merge Requests"
+- page_description     @merge_request.description
+- page_card_attributes @merge_request.card_attributes
+- header_title project_title(@project, "Merge Requests", namespace_project_merge_requests_path(@project.namespace, @project))
+
+.merge-request{'data-url' => namespace_project_merge_request_path(@merge_request.project.namespace, @merge_request.project, @merge_request)}
+  .merge-request-details.issuable-details{data: {id: @merge_request.project.id}}
+  - if @commits.present?
+    %ul.merge-request-tabs.nav-links.no-top.no-bottom
+      %li.notes-tab
+        = link_to namespace_project_merge_request_path(@project.namespace, @project, @merge_request), data: {target: 'div#notes', action: 'notes', toggle: 'tab'} do
+          Discussion
+          %span.badge= @merge_request.mr_and_commit_notes.user.nonawards.count
+
+    .tab-content
+      #notes.notes.tab-pane.voting_notes
+        .row
+          %section.col-md-12
+            .issuable-discussion
+              %ul#notes-list.notes.main-notes-list.timeline
+                = render "projects/notes/notes"
+              %ul.notes.notes-form.timeline
+                %li.timeline-entry
+                  - if can? current_user, :create_note, @project
+                    .timeline-icon.hidden-xs.hidden-sm
+                      %a.author_link{ href: user_path(current_user) }
+                        = image_tag avatar_icon(current_user), alt: current_user.to_reference, class: 'avatar s40'
+                    .timeline-content.timeline-content-form
+                      = render "projects/notes/form", view: diff_view
+                  - else
+                    .disabled-comment.text-center
+                      .disabled-comment-text.inline
+                        Please
+                        = link_to "register",new_user_session_path
+                        or
+                        = link_to "login",new_user_session_path
+                        to post a comment
+
+:javascript
+  var merge_request = new MergeRequest({
+    action: "notes"
+  });
+
+  var notes = new Notes("#{namespace_project_notes_path(namespace_id: @project.namespace, project_id: @project, target_id: @noteable.id, target_type: @noteable.class.name.underscore)}", #{@notes.map(&:id).to_json}, #{Time.now.to_i}, "#{diff_view}")
+
+:css
+  .timeline-content-form form {
+    display: block !important;
+  }
+  .merge-request-tabs {
+    display: none;
+  }
+  .merge-request {
+    margin-top: -50px;
+  }

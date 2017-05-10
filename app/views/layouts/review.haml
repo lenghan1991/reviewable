@@ -1,0 +1,34 @@
+!!! 5
+%html{ lang: "en"}
+  = render "layouts/head"
+  %body{class: "#{user_application_theme}", 'data-page' => body_data_page}
+    -# Ideally this would be inside the head, but turbolinks only evaluates page-specific JS in the body.
+    - project = @target_project || @project
+    - if @project_wiki
+      - markdown_preview_path = namespace_project_wikis_markdown_preview_path(project.namespace, project)
+    - else
+      - markdown_preview_path = markdown_preview_namespace_project_path(project.namespace, project)
+    - if current_user
+      :javascript
+        window.project_uploads_path = "#{namespace_project_uploads_path project.namespace,project}";
+        window.markdown_preview_path = "#{markdown_preview_path}";
+
+    .page-with-sidebar
+      - if defined?(nav) && nav
+        .layout-nav
+          .container-fluid
+            = render "layouts/nav/#{nav}"
+      .content-wrapper{ class: "#{layout_nav_class} #{layout_dropdown_class}" }
+        = render "layouts/broadcast"
+        = render "layouts/flash"
+        = yield :flash_message
+        %div{ class: (container_class unless @no_container) }
+          .content
+            .clearfix
+              = yield
+
+    = render "layouts/init_auto_complete" if current_user
+
+    - page_title       @project.name_with_namespace
+    - page_description @project.description    unless page_description
+    - header_title     project_title(@project) unless header_title
