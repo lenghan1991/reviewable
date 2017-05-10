@@ -1,4 +1,4 @@
-Reviewable::Engine.routes.draw do
+GitlabReviewable::Engine.routes.draw do
 	get 'diffs' => 'reviews#diffs'
 	get 'discussion' => 'reviews#discussion'
 	get 'help/shortcuts'

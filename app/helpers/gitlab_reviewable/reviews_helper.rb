@@ -1,4 +1,4 @@
-module Reviewable
+module GitlabReviewable
   module ReviewsHelper
     def method_missing method, *args, &block
       if method.to_s.end_with?('_path') or method.to_s.end_with?('_url')

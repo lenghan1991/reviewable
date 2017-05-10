@@ -15,7 +15,6 @@
     .tab-content
       #diffs.diffs.tab-pane
         - # This tab is always loaded via AJAX
-
       #notes.notes.tab-pane.voting_notes
         .row
           %section.col-md-12
@@ -34,19 +33,16 @@
                     .disabled-comment.text-center
                       .disabled-comment-text.inline
                         Please
-                        = link_to "register", new_user_session_path
+                        = link_to "register",new_user_session_path
                         or
-                        = link_to "login", new_user_session_path
+                        = link_to "login",new_user_session_path
                         to post a comment
 
 :javascript
-  var merge_request;
-
-  merge_request = new MergeRequest({
+  var notes = new Notes("#{namespace_project_notes_path(namespace_id: @project.namespace, project_id: @project, target_id: @noteable.id, target_type: @noteable.class.name.underscore)}", #{@notes.map(&:id).to_json}, #{Time.now.to_i}, "#{diff_view}")
+  var merge_request = new MergeRequest({
     action: "diffs"
   });
-  
-  var notes = new Notes("#{namespace_project_notes_path(namespace_id: @project.namespace, project_id: @project, target_id: @noteable.id, target_type: @noteable.class.name.underscore)}", #{@notes.map(&:id).to_json}, #{Time.now.to_i}, "#{diff_view}")
 
 :css
   .merge-request-tabs {

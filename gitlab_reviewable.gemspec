@@ -1,12 +1,12 @@
 $:.push File.expand_path("../lib", __FILE__)
 
 # Maintain your gem's version:
-require "reviewable/version"
+require "gitlab_reviewable/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name        = "gitlab_reviewable"
-  s.version     = Reviewable::VERSION
+  s.version     = GitlabReviewable::VERSION
   s.authors     = ["lenghan"]
   s.email       = ["lenghan1991@gmail.com"]
   s.homepage    = "http://github.com/lenghan1991/reviewable"

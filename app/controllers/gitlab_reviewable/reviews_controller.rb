@@ -1,4 +1,4 @@
-module Reviewable
+module GitlabReviewable
   class ReviewsController < ApplicationController
     include DiffHelper
 

@@ -1,4 +1,4 @@
 Rails.application.routes.draw do
 
-  mount Reviewable::Engine => "/reviewable"
+  mount GitlabReviewable::Engine => "/reviewable"
 end

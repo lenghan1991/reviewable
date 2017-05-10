@@ -12,5 +12,5 @@ gem 'gitlab_reviewable'
 in  routes.rb
 
 ```ruby
-mount Reviewable::Engine, at: "/reviews"
+mount GitlabReviewable::Engine, at: "/reviews"
 ```
