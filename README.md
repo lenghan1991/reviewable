@@ -1,6 +1,6 @@
-= Gitlab Reviewable
+# Gitlab Reviewable
 
-This project rocks and uses MIT-LICENSE.
+Add two seperate pages in gitlab merge request for reviewing tools.
 
 ## Usage
 in Gemfile
