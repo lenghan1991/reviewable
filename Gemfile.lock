@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    gitlab_reviewable (0.0.4)
+    gitlab_reviewable (0.0.5)
       haml-rails (~> 0.9.0)
       rails (~> 4.2.6)
 

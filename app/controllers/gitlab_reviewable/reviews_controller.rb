@@ -29,8 +29,8 @@ module GitlabReviewable
     private
 
     def merge_request
-      @project = Project.find_by!(id: params[:project_id])
-      @merge_request ||= @project.merge_requests.find_by!(iid: params[:merge_request_id])
+      @project = Project.find_by!(id: params[:m_project_id])
+      @merge_request ||= @project.merge_requests.find_by!(iid: params[:m_merge_request_id])
     end
     
     def define_show_vars
