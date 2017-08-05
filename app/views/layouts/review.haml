@@ -8,18 +8,17 @@
         - if current_user
         :javascript
           window.project_uploads_path = "#{namespace_project_uploads_path project.namespace,project}";
-          window.markdown_preview_path = "#{markdown_preview_path}";
 
       .page-with-sidebar
         - if defined?(nav) && nav
           .layout-nav
             .container-fluid
               = render "layouts/nav/#{nav}"
-        .content-wrapper{ class: "#{layout_nav_class} #{layout_dropdown_class}" }
+        .content-wrapper{ class: layout_nav_class }
           = render "layouts/broadcast"
           = render "layouts/flash"
           = yield :flash_message
-          %div{ class: (container_class unless @no_container) }
+          %div{ class: "#{(container_class unless @no_container)} #{@content_class}" }
             .content
               .clearfix
                 = yield

@@ -35,7 +35,7 @@ module GitlabReviewable
     def define_show_vars
       # Build a note object for comment form
       @note = @project.notes.new(noteable: @merge_request)
-      @discussions = @notes.discussions
+      @discussions = @merge_request.discussions
       @notes = prepare_notes_for_rendering(@discussions.flat_map(&:notes))
       @noteable = @merge_request
 
@@ -45,15 +45,12 @@ module GitlabReviewable
 
       @merge_request_diff = @merge_request.merge_request_diff
 
-      @ci_commit = @merge_request.ci_commit
-      @statuses = @ci_commit.statuses if @ci_commit
-
       if @merge_request.locked_long_ago?
         @merge_request.unlock_mr
         @merge_request.close
       end
     end
-    
+
     def prepare_notes_for_rendering(notes)
       preload_noteable_for_regular_notes(notes)
       preload_max_access_for_authors(notes, @project)
