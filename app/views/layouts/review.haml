@@ -2,14 +2,10 @@
 %html{ lang: "en"}
   = render "layouts/head"
   - if current_user
-    %body{class: "#{user_application_theme}", 'data-page' => body_data_page}
+    %body{class: @body_class, 'data-page' => body_data_page}
       -# Ideally this would be inside the head, but turbolinks only evaluates page-specific JS in the body.
-      - project = @target_project || @project
-      - if @project_wiki
-        - markdown_preview_path = namespace_project_wikis_markdown_preview_path(project.namespace, project)
-      - else
-        - markdown_preview_path = markdown_preview_namespace_project_path(project.namespace, project)
-      - if current_user
+      - project = @project
+        - if current_user
         :javascript
           window.project_uploads_path = "#{namespace_project_uploads_path project.namespace,project}";
           window.markdown_preview_path = "#{markdown_preview_path}";

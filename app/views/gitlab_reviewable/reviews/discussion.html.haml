@@ -10,7 +10,7 @@
       %li.notes-tab
         = link_to namespace_project_merge_request_path(@project.namespace, @project, @merge_request), data: {target: 'div#notes', action: 'notes', toggle: 'tab'} do
           Discussion
-          %span.badge= @merge_request.mr_and_commit_notes.user.nonawards.count
+          %span.badge= @merge_request.related_notes.user.count
 
     .tab-content
       #notes.notes.tab-pane.voting_notes

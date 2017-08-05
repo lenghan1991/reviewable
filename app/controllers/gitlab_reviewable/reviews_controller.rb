@@ -8,10 +8,9 @@ module GitlabReviewable
     layout 'review'
 
     def diffs
-      puts 111111
-      @note_counts = Note.where(commit_id: @merge_request.commits.map(&:id)).
-        group(:commit_id).count
-
+      # @note_counts = Note.where(commit_id: @merge_request.commits.map(&:id)).
+      #   group(:commit_id).count
+      
       respond_to do |format|
         format.html
       end
@@ -36,8 +35,8 @@ module GitlabReviewable
     def define_show_vars
       # Build a note object for comment form
       @note = @project.notes.new(noteable: @merge_request)
-      @notes = @merge_request.mr_and_commit_notes.nonawards.inc_author.fresh
       @discussions = @notes.discussions
+      @notes = prepare_notes_for_rendering(@discussions.flat_map(&:notes))
       @noteable = @merge_request
 
       # Get commits from repository
@@ -53,6 +52,25 @@ module GitlabReviewable
         @merge_request.unlock_mr
         @merge_request.close
       end
+    end
+    
+    def prepare_notes_for_rendering(notes)
+      preload_noteable_for_regular_notes(notes)
+      preload_max_access_for_authors(notes, @project)
+      Banzai::NoteRenderer.render(notes, @project, current_user)
+
+      notes
+    end
+
+    def preload_max_access_for_authors(notes, project)
+      return nil unless project
+
+      user_ids = notes.map(&:author_id)
+      project.team.max_member_access_for_user_ids(user_ids)
+    end
+
+    def preload_noteable_for_regular_notes(notes)
+      ActiveRecord::Associations::Preloader.new.preload(notes.reject(&:for_commit?), :noteable)
     end
   end
 end
